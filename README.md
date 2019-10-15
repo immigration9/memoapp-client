@@ -1,68 +1,88 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# MemoApp Client
 
-## Available Scripts
+> React 기반 Memo 저장 애플리케이션.
 
-In the project directory, you can run:
+## 사용된 프레임워크 및 라이브러리
 
-### `yarn start`
+* react: React 16.10 버전 이용. Hook으로 컴포넌트 구성
+* redux: 통합 상태 관리를 위해 사용 
+* react-redux
+* redux-thunk: 비동기 Redux Action을 처리하기 위해 사용
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* styled-components: CSS 대체를 위해 사용
+* axios: API 호출을 위해 사용
+* moment: Timestamp formatting을 위해 사용
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+* react-draft-wysiwyg : 아래 3개의 라이브러리는, DraftJS 기반 Wysiwyg 에디터 사용을 위해 구성.
+* html-to-draftjs
+* draft-js
 
-### `yarn test`
+## 기능들
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* SPA 형태로 동작하며, 페이지 새로 고침시 마지막에 보았던 페이지로 이동
+* HTML 형식으로 텍스트 저장 가능
+* 메모의 제목 / 내용 / 최종 수정일 / 생성일 조회 가능
+* 라벨로 메모 분류 가능
+* 메모 추가 / 수정 / 삭제 가능
 
-### `yarn build`
+* 라벨에 해당하는 메모 없을 경우 안내 화면 표시
+* 페이지 이동간에 이전에 보았던 라벨, 메모의 조회 순서에 따라 이동
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 사용 방법
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### 필요사항
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+memoapp-api 필요
+* 자세한 정보는 링크 참조: [https://github.com/dramancompany/memoapp-api](https://github.com/dramancompany/memoapp-api)
 
-### `yarn eject`
+1. MongoDB 설치 (if not installed)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Mac:
+```bash
+brew install mongodb
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Ubuntu:
+```bash
+sudo apt-get -y install mongodb
+```
+- Windows: [https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+API 프로젝트 루트 폴더에서 아래 명령어로 MongoDB 시작
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+mongod --dbpath ./data/db/
+```
 
-## Learn More
+2. API 프로젝트 실행
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+git clone https://github.com/dramancompany/memoapp-api.git
+cd memoapp-api
+npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+API server 시작
 
-### Code Splitting
+```bash
+PORT=3000 npm start
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+1. Front 프로젝트 실행
 
-### Analyzing the Bundle Size
+```bash
+cd memoapp-client
+yarn install
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Front 프로젝트 실행
 
-### Making a Progressive Web App
+```bash
+PORT=3001 yarn start
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## 향후 TODO
+- 다중 선택하여 삭제하기
+- 다중 선택 후 Label 등록하기
+- Test 코드 넣기 (환경만 구성 후 시간 관계상 실행하지 못함)
+- Build & Deploy용 코드 수정
