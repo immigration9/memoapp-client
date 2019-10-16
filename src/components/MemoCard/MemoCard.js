@@ -29,7 +29,7 @@ function MemoCard(props) {
   return (
     <CardWrapper to={url}>
       <CheckboxSection>
-        <Checkbox />
+        <Checkbox disabled />
       </CheckboxSection>
       <ContentSection>
         <Title>{props.memo.title}</Title>

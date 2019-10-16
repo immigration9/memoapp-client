@@ -1,9 +1,7 @@
-import axios from "axios";
 import { createAction } from "redux-actions";
 import {
   createMemoApi,
   updateMemoApi,
-  fetchMemoApi,
   fetchAllMemosApi,
   deleteMemoApi,
   fetchMemosByLabelApi

@@ -19,10 +19,13 @@ function LabelList(props) {
     dispatch(fetchAllLabels());
   }, []);
 
+  let totalMemos = 0;
+  labels.forEach((lbl) => (totalMemos += lbl.memos.length));
+
   return (
     <LabelListWrapper>
       <ListsSection>
-        <LabelWrapper to={`/label/all`}>전체</LabelWrapper>
+        <LabelWrapper to={`/label/all`}>전체 ({totalMemos})</LabelWrapper>
         {labels.map((lbl) => {
           return (
             <LabelWrapper key={lbl._id} to={`/label/${lbl._id}`}>

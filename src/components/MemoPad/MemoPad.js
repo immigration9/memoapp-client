@@ -95,11 +95,11 @@ function MemoPad(props) {
         </ButtonPart>
       </TitleSection>
       <InfoSection>
-        <Select
+        {/* <Select
           placeholder="태그를 등록해주세요"
           mode="multiple"
           style={{ width: "60%" }}
-        />
+        ></Select> */}
         <DatetimePart>
           <span>
             {memoInfo &&

@@ -39,6 +39,8 @@
 * Label에 속한 Memo 목록
 * Memo 추가 가능: Memo 추가를 누르면 "noname"의 메모가 자동으로 추가된다. 특정 Label 안에서 생성할 경우 자동으로 해당 Label에 등록되도록 되어있다.
 
+* TODO: 향후 Memo를 여러개 선택하였을 때 삭제 / 태그 수정 등의 기능을 넣을 예정.
+
 ### MemoPad
 
 * Memo 내용 수정 / 삭제
