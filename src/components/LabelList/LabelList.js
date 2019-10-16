@@ -7,6 +7,7 @@ import {
 } from "./LabelListStyles";
 import PrimaryButton from "components/Buttons/PrimaryButton";
 import { fetchAllLabels, createLabel } from "actions/labelActions";
+import { fetchAllMemos } from "actions/memoActions";
 import AddLabelModal from "components/Modal/AddLabelModal";
 
 function LabelList(props) {
@@ -19,13 +20,10 @@ function LabelList(props) {
     dispatch(fetchAllLabels());
   }, []);
 
-  let totalMemos = 0;
-  labels.forEach((lbl) => (totalMemos += lbl.memos.length));
-
   return (
     <LabelListWrapper>
       <ListsSection>
-        <LabelWrapper to={`/label/all`}>전체 ({totalMemos})</LabelWrapper>
+        <LabelWrapper to={`/label/all`}>전체</LabelWrapper>
         {labels.map((lbl) => {
           return (
             <LabelWrapper key={lbl._id} to={`/label/${lbl._id}`}>

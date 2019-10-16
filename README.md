@@ -6,7 +6,8 @@
 
 * react: React 16.10 버전 이용. Hook으로 컴포넌트 구성
 * redux: 통합 상태 관리를 위해 사용 
-* react-redux
+* react-redux: React와 Redux 연결하는 역할 수행
+* redux-action: Redux Action 생성을 쉽게 하기 위해 사용
 * redux-thunk: 비동기 Redux Action을 처리하기 위해 사용
 
 * styled-components: CSS 대체를 위해 사용
