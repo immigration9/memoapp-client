@@ -81,8 +81,12 @@ Front 프로젝트 실행
 PORT=3001 yarn start
 ```
 
+## 컴포넌트 설계
+[컴포넌트 설명](./Components.md)
+
 ## 향후 TODO
 - 다중 선택하여 삭제하기
 - 다중 선택 후 Label 등록하기
 - Test 코드 넣기 (환경만 구성 후 시간 관계상 실행하지 못함)
 - Build & Deploy용 코드 수정
+- 반응형으로 구성
