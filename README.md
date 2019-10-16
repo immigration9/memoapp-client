@@ -72,6 +72,7 @@ PORT=3000 npm start
 ### 3. Front 프로젝트 실행
 
 ```bash
+git clone https://github.com/immigration9/memoapp-client.git
 cd memoapp-client
 yarn install
 ```
