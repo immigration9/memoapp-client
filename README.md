@@ -28,14 +28,14 @@
 * 라벨에 해당하는 메모 없을 경우 안내 화면 표시
 * 페이지 이동간에 이전에 보았던 라벨, 메모의 조회 순서에 따라 이동
 
-## 사용 방법
+## 실행방법
 
-### 필요사항
+### 1. DB 설치 및 실행
 
 memoapp-api 필요
 * 자세한 정보는 링크 참조: [https://github.com/dramancompany/memoapp-api](https://github.com/dramancompany/memoapp-api)
 
-1. MongoDB 설치 (if not installed)
+* MongoDB 설치 (if not installed)
 
 - Mac:
 ```bash
@@ -54,7 +54,7 @@ API 프로젝트 루트 폴더에서 아래 명령어로 MongoDB 시작
 mongod --dbpath ./data/db/
 ```
 
-2. API 프로젝트 실행
+### 2. API 프로젝트
 
 ```bash
 git clone https://github.com/dramancompany/memoapp-api.git
@@ -68,7 +68,7 @@ API server 시작
 PORT=3000 npm start
 ```
 
-1. Front 프로젝트 실행
+### 3. Front 프로젝트 실행
 
 ```bash
 cd memoapp-client
