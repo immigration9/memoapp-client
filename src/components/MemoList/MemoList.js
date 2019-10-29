@@ -30,6 +30,7 @@ function MemoList(props) {
   const labelInfo = useSelector((state) =>
     state.labels.labels.find((lbl) => lbl._id === labelId)
   );
+  const [selectedMemos, setSelectedMemos] = useState([]);
 
   /**
    * LabelId가 변경될 때 Memo를 다시 가져온다.
@@ -44,6 +45,25 @@ function MemoList(props) {
       }
     }
   });
+
+  const setMemoList = (e, id) => {
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setSelectedMemos([...selectedMemos, id]);
+    } else {
+      setSelectedMemos(selectedMemos.filter((memo) => memo !== id));
+    }
+  };
+
+  const removeSelectedMemos = () => {
+    const confirmDelete = window.confirm("선택된 메모들을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      selectedMemos.forEach((memoId) => {
+        dispatch(deleteMemo(memoId, selectedLabel));
+      });
+    }
+    setSelectedMemos([]);
+  };
 
   return (
     <MemoListWrapper>
@@ -68,19 +88,40 @@ function MemoList(props) {
         )}
       </LabelSection>
       <MemoSection>
+        {/*
+         * 생각해보니, 이 부분은 그냥 별도의 컴포넌트로 빼서, memo list를 관리하는 별도의 Hook을 두어도 될듯하다.
+         */}
         {memos.map((memo) => {
-          return <MemoCard key={memo._id} labelId={labelId} memo={memo} />;
+          const isChecked = selectedMemos.find((label) => label === memo._id);
+          return (
+            <MemoCard
+              isChecked={isChecked ? true : false}
+              changeStatus={(e) => setMemoList(e, memo._id)}
+              key={memo._id}
+              labelId={labelId}
+              memo={memo}
+            />
+          );
         })}
         {memos.length === 0 && "등록된 메모가 없습니다"}
       </MemoSection>
 
       {/* 만약 선택된 항목이 있다면 Remove Memo를, 없다면 Add Memo를 */}
       {/* LabelId가 있고, all이 아니라면 List에도 추가해줘야 한다. */}
-      <PrimaryButton
-        onClick={() => dispatch(createMemo("noname", "", labelId))}
-        styles={{ height: "2rem" }}
-        text="메모 추가"
-      />
+
+      {selectedMemos.length === 0 ? (
+        <PrimaryButton
+          onClick={() => dispatch(createMemo("noname", "", labelId))}
+          styles={{ height: "2rem" }}
+          text="메모 추가"
+        />
+      ) : (
+        <RemoveButton
+          onClick={removeSelectedMemos}
+          styles={{ height: "2rem" }}
+          text="선택된 메모 삭제"
+        />
+      )}
 
       <AddLabelModal
         title="레이블명 변경"

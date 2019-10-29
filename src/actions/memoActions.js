@@ -85,16 +85,11 @@ export const updateMemo = (memoId, title, content) => async (dispatch) => {
   }
 };
 
-export const deleteMemo = (memoId, labelId) => async (dispatch) => {
+export const deleteMemo = (memoId) => async (dispatch) => {
   dispatch(pendingMemo());
   try {
     const data = await deleteMemoApi(memoId);
     dispatch(deleteMemoSuccess(data));
-
-    /**
-     * @todo
-     */
-    // dispatch(deleteMemoReference(memoId));
   } catch (err) {
     dispatch(failureMemo(err));
   }

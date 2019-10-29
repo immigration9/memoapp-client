@@ -1,6 +1,7 @@
 import React from "react";
 import {
   CardWrapper,
+  CardLink,
   CheckboxSection,
   ContentSection,
   TimeSection,
@@ -27,17 +28,19 @@ function MemoCard(props) {
     url = `/label/${props.labelId}` + url;
   }
   return (
-    <CardWrapper to={url}>
+    <CardWrapper>
       <CheckboxSection>
-        <Checkbox disabled />
+        <Checkbox checked={props.isChecked} onChange={props.changeStatus} />
       </CheckboxSection>
-      <ContentSection>
-        <Title>{props.memo.title}</Title>
-        <Summary>{renderSummary(props.memo.content)}</Summary>
-      </ContentSection>
-      <TimeSection>
-        {moment(props.memo.updatedAt).format("YYYY-MM-DD")}
-      </TimeSection>
+      <CardLink to={url}>
+        <ContentSection>
+          <Title>{props.memo.title}</Title>
+          <Summary>{renderSummary(props.memo.content)}</Summary>
+        </ContentSection>
+        <TimeSection>
+          {moment(props.memo.updatedAt).format("YYYY-MM-DD")}
+        </TimeSection>
+      </CardLink>
     </CardWrapper>
   );
 }

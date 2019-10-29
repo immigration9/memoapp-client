@@ -2,17 +2,24 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 const activeClassName = "active";
-export const CardWrapper = styled(NavLink).attrs({
-  activeClassName: activeClassName
-})`
+
+export const CardWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 8rem;
   margin: 5px 0;
-  align-items: center;
   background-color: white;
-  border: 1px solid blue;
   color: blue;
+`;
+
+export const CardLink = styled(NavLink).attrs({
+  activeClassName: activeClassName
+})`
+  display: flex;
+  width: 90%;
+  align-items: center;
+  border: 1px solid blue;
+  justify-content: space-between;
 
   &.${activeClassName} {
     background-color: blue;
@@ -22,11 +29,13 @@ export const CardWrapper = styled(NavLink).attrs({
 
 export const CheckboxSection = styled.div`
   width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ContentSection = styled.div`
-  width: 65%;
-  padding: 0 0.5rem;
+  padding-left: 1rem;
   text-align: left;
 `;
 
@@ -37,7 +46,6 @@ export const Title = styled.div`
 export const Summary = styled.div``;
 
 export const TimeSection = styled.div`
-  width: 25%;
   padding-right: 1rem;
   text-align: right;
 `;
