@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import {
@@ -19,16 +19,16 @@ import RemoveButton from "components/Buttons/RemoveButton";
 import { deleteLabel, updateLabel } from "actions/labelActions";
 import AddLabelModal from "components/Modal/AddLabelModal";
 
-function MemoList(props) {
+function MemoList() {
   const { labelId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLabel, changeLabel] = useState();
-  const memos = useSelector((state) => state.memos.memos);
-  const labelInfo = useSelector((state) =>
-    state.labels.labels.find((lbl) => lbl._id === labelId)
+  const memos = useSelector(({ memos }) => memos.memos);
+  const labelInfo = useSelector(({ labels }) =>
+    labels.labels.find((lbl) => lbl._id === labelId)
   );
   const [selectedMemos, setSelectedMemos] = useState([]);
 
@@ -44,16 +44,19 @@ function MemoList(props) {
         dispatch(fetchMemosByLabel(labelId));
       }
     }
-  });
+  }, [dispatch, labelId, selectedLabel]);
 
-  const setMemoList = (e, id) => {
-    const isChecked = e.target.checked;
-    if (isChecked) {
-      setSelectedMemos([...selectedMemos, id]);
-    } else {
-      setSelectedMemos(selectedMemos.filter((memo) => memo !== id));
-    }
-  };
+  const setMemoList = useCallback(
+    (e, id) => {
+      const isChecked = e.target.checked;
+      if (isChecked) {
+        setSelectedMemos([...selectedMemos, id]);
+      } else {
+        setSelectedMemos(selectedMemos.filter((memo) => memo !== id));
+      }
+    },
+    [setSelectedMemos, selectedMemos]
+  );
 
   const removeSelectedMemos = () => {
     const confirmDelete = window.confirm("선택된 메모들을 삭제하시겠습니까?");
@@ -64,6 +67,23 @@ function MemoList(props) {
     }
     setSelectedMemos([]);
   };
+
+  const memoList = useMemo(
+    () =>
+      memos.map((memo) => {
+        const isChecked = selectedMemos.find((label) => label === memo._id);
+        return (
+          <MemoCard
+            isChecked={isChecked ? true : false}
+            changeStatus={(e) => setMemoList(e, memo._id)}
+            key={memo._id}
+            labelId={labelId}
+            memo={memo}
+          />
+        );
+      }),
+    [memos, labelId, selectedMemos, setMemoList]
+  );
 
   return (
     <MemoListWrapper>
@@ -88,21 +108,7 @@ function MemoList(props) {
         )}
       </LabelSection>
       <MemoSection>
-        {/*
-         * 생각해보니, 이 부분은 그냥 별도의 컴포넌트로 빼서, memo list를 관리하는 별도의 Hook을 두어도 될듯하다.
-         */}
-        {memos.map((memo) => {
-          const isChecked = selectedMemos.find((label) => label === memo._id);
-          return (
-            <MemoCard
-              isChecked={isChecked ? true : false}
-              changeStatus={(e) => setMemoList(e, memo._id)}
-              key={memo._id}
-              labelId={labelId}
-              memo={memo}
-            />
-          );
-        })}
+        {memoList}
         {memos.length === 0 && "등록된 메모가 없습니다"}
       </MemoSection>
 

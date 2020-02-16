@@ -7,10 +7,9 @@ import {
 } from "./LabelListStyles";
 import PrimaryButton from "components/Buttons/PrimaryButton";
 import { fetchAllLabels, createLabel } from "actions/labelActions";
-import { fetchAllMemos } from "actions/memoActions";
 import AddLabelModal from "components/Modal/AddLabelModal";
 
-function LabelList(props) {
+function LabelList() {
   const labels = useSelector((state) => state.labels.labels);
   const dispatch = useDispatch();
 
@@ -18,7 +17,7 @@ function LabelList(props) {
 
   useEffect(() => {
     dispatch(fetchAllLabels());
-  }, []);
+  }, [dispatch]);
 
   return (
     <LabelListWrapper>

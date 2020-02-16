@@ -15,7 +15,7 @@ import htmlToDraft from "html-to-draftjs";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import RemoveButton from "components/Buttons/RemoveButton";
-import { Select, Input } from "antd";
+import { Input } from "antd";
 import moment from "moment";
 import PrimaryButton from "components/Buttons/PrimaryButton";
 import { deleteMemo, updateMemo } from "actions/memoActions";
@@ -35,7 +35,7 @@ function htmlFromState(state) {
   return draftToHtml(convertToRaw(state.getCurrentContent()));
 }
 
-function MemoPad(props) {
+function MemoPad() {
   const { labelId, memoId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -53,11 +53,8 @@ function MemoPad(props) {
       changeMemoTitle(memoInfo.title);
       changeState(stateFromHtml(memoInfo.content));
     }
-  });
+  }, [memoId, memoInfo, selectedMemo]);
 
-  /**
-   * 없을 경우 아래 메시지 출력
-   */
   if (!memoId) {
     return (
       <MemoPadWrapper>

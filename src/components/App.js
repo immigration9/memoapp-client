@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import LabelList from "components/LabelList/LabelList";
-import MemoList from "components/MemoList/MemoList";
-import MemoPad from "components/MemoPad/MemoPad";
+import LabelList from "containers/LabelList/LabelList";
+import MemoList from "containers/MemoList/MemoList";
+import MemoPad from "containers/MemoPad/MemoPad";
 import { AppWrapper } from "styles/global";
 
 function App() {
