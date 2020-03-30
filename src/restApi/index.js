@@ -77,9 +77,9 @@ export const registerMemoToLabelApi = (labelId, memoIds) => {
   );
 };
 
-export const deregisterMemoFromLabelApi = (labelId, memoId) => {
+export const deregisterMemoFromLabelApi = (labelId, memoIds) => {
   return instance.post(
     `/${LABEL}/${labelId}/memos/delete`,
-    strfy({ memoIds: [memoId] })
+    strfy({ memoIds: Array.isArray(memoIds) ? memoIds : [memoIds] })
   );
 };

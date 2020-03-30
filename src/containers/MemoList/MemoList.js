@@ -79,11 +79,7 @@ function MemoList() {
       "선택된 메모들을 레이블에서 제거하시겠습니까?"
     );
     if (confirmDelete) {
-      await Promise.all(
-        selectedMemos.map((memoId) =>
-          dispatch(deregisterMemoFromLabel(memoId, labelId))
-        )
-      );
+      await dispatch(deregisterMemoFromLabel(labelId, selectedMemos));
       await dispatch(fetchAllLabels());
     }
     setSelectedMemos([]);
@@ -108,31 +104,6 @@ function MemoList() {
 
   return (
     <MemoListWrapper>
-      <LabelSection>
-        {(labelInfo && labelInfo.title) || "전체"}
-        {labelId !== "all" && (
-          <ButtonPart>
-            <PrimaryButton
-              styles={{ width: "6rem" }}
-              text="레이블 수정"
-              onClick={() => setNameChangeModalVisible(true)}
-            />
-            <RemoveButton
-              styles={{ width: "6rem" }}
-              text="레이블 삭제"
-              onClick={() => {
-                dispatch(deleteLabel(labelId));
-                history.push(`/label/all`);
-              }}
-            />
-          </ButtonPart>
-        )}
-      </LabelSection>
-      <MemoSection>
-        {memoList}
-        {memos.length === 0 && "등록된 메모가 없습니다"}
-      </MemoSection>
-
       {/* 만약 선택된 항목이 있다면 Remove Memo를, 없다면 Add Memo를 */}
       {/* LabelId가 있고, all이 아니라면 List에도 추가해줘야 한다. */}
 
@@ -165,6 +136,31 @@ function MemoList() {
           />
         </>
       )}
+
+      <LabelSection>
+        {(labelInfo && labelInfo.title) || "전체"}
+        {labelId !== "all" && (
+          <ButtonPart>
+            <PrimaryButton
+              styles={{ width: "6rem" }}
+              text="레이블 수정"
+              onClick={() => setNameChangeModalVisible(true)}
+            />
+            <RemoveButton
+              styles={{ width: "6rem" }}
+              text="레이블 삭제"
+              onClick={() => {
+                dispatch(deleteLabel(labelId));
+                history.push(`/label/all`);
+              }}
+            />
+          </ButtonPart>
+        )}
+      </LabelSection>
+      <MemoSection>
+        {memoList}
+        {memos.length === 0 && "등록된 메모가 없습니다"}
+      </MemoSection>
 
       {nameChangeModalVisible && (
         <AddLabelModal

@@ -14,8 +14,8 @@ export const Button = styled.button`
           border-radius: 1rem;
         `
       : css`
-          height: 6rem;
-          font-size: 2rem;
+          height: 3rem;
+          font-size: 1.5rem;
           border-radius: 3rem;
         `}
 `;

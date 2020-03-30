@@ -28,6 +28,12 @@ function LabelList() {
 
   return (
     <LabelListWrapper>
+      <PrimaryButton
+        onClick={() => setModalVisible(true)}
+        size="big"
+        text="레이블 추가"
+      />
+
       <ListsSection>
         <LabelWrapper to={`/label/all`}>전체 ({memosCount})</LabelWrapper>
         {labels.map((lbl) => {
@@ -38,12 +44,6 @@ function LabelList() {
           );
         })}
       </ListsSection>
-
-      <PrimaryButton
-        onClick={() => setModalVisible(true)}
-        size="big"
-        text="레이블 추가"
-      />
 
       {modalVisible && (
         <AddLabelModal
