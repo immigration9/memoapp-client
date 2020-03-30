@@ -5,7 +5,9 @@ import {
   fetchAllLabelsApi,
   updateLabelApi,
   deleteLabelApi,
-  registerMemoToLabelApi
+  registerMemoToLabelApi,
+  deregisterMemoFromLabelApi,
+  fetchMemosByLabelApi
 } from "restApi";
 import {
   CREATE_LABEL,
@@ -14,8 +16,10 @@ import {
   DELETE_LABEL,
   PENDING_LABEL,
   FAILURE_LABEL,
-  REGISTER_MEMO_TO_LABEL
+  REGISTER_MEMO_TO_LABEL,
+  DEREGISTER_MEMO_TO_LABEL
 } from "actions/types";
+import { fetchMemosByLabelSuccess } from "./memoActions";
 
 export const pendingLabel = createAction(PENDING_LABEL);
 export const failureLabel = createAction(FAILURE_LABEL, (error) => error);
@@ -32,6 +36,10 @@ export const registerMemoToLabelSuccess = createAction(
   REGISTER_MEMO_TO_LABEL,
   (data) => data
 );
+export const deregisterMemoFromLabelSuccess = createAction(
+  DEREGISTER_MEMO_TO_LABEL,
+  (data) => data
+);
 
 export const createLabel = (title, content) => async (dispatch) => {
   if (isEmptyString(title)) {
@@ -40,7 +48,7 @@ export const createLabel = (title, content) => async (dispatch) => {
 
   dispatch(pendingLabel());
   try {
-    const data = await createLabelApi(title, content);
+    const { data } = await createLabelApi(title, content);
     dispatch(createLabelSuccess(data));
   } catch (err) {
     dispatch(failureLabel(err));
@@ -50,18 +58,33 @@ export const createLabel = (title, content) => async (dispatch) => {
 export const registerMemoToLabel = (labelId, memoId) => async (dispatch) => {
   dispatch(pendingLabel());
   try {
-    const data = await registerMemoToLabelApi(labelId, memoId);
+    const { data } = await registerMemoToLabelApi(labelId, memoId);
     dispatch(registerMemoToLabelSuccess(data));
   } catch (err) {
     dispatch(failureLabel(err));
   }
 };
 
-export const fetchAllLabels = (isPopulated) => async (dispatch) => {
+export const deregisterMemoFromLabel = (labelId, memoId) => async (
+  dispatch
+) => {
+  dispatch(pendingLabel());
+  try {
+    const { data } = await deregisterMemoFromLabelApi(labelId, memoId);
+    dispatch(deregisterMemoFromLabelSuccess(data));
+
+    const { data: memoData } = await fetchMemosByLabelApi(labelId);
+    dispatch(fetchMemosByLabelSuccess(memoData));
+  } catch (err) {
+    dispatch(failureLabel(err));
+  }
+};
+
+export const fetchAllLabels = () => async (dispatch) => {
   dispatch(pendingLabel());
 
   try {
-    const data = await fetchAllLabelsApi(isPopulated);
+    const { data } = await fetchAllLabelsApi();
     dispatch(fetchAllLabelsSuccess(data));
   } catch (err) {
     dispatch(failureLabel(err));
@@ -72,7 +95,7 @@ export const updateLabel = (labelId, title) => async (dispatch) => {
   dispatch(pendingLabel());
 
   try {
-    const data = await updateLabelApi(labelId, title);
+    const { data } = await updateLabelApi(labelId, title);
     dispatch(updateLabelSuccess(data));
   } catch (err) {
     dispatch(failureLabel(err));
@@ -83,7 +106,7 @@ export const deleteLabel = (labelId) => async (dispatch) => {
   dispatch(pendingLabel());
 
   try {
-    const data = await deleteLabelApi(labelId);
+    const { data } = await deleteLabelApi(labelId);
     dispatch(deleteLabelSuccess(data));
   } catch (err) {
     dispatch(failureLabel(err));

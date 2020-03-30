@@ -44,7 +44,7 @@ function MemoPad() {
   const [editorState, changeState] = useState(EditorState.createEmpty());
 
   const memoInfo = useSelector((state) =>
-    state.memos.memos.find((memo) => memo._id === memoId)
+    state.memos.memos.find((memo) => memo.id === memoId)
   );
 
   useEffect(() => {

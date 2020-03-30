@@ -8,7 +8,8 @@ import {
   FETCH_LABEL,
   PENDING_LABEL,
   FAILURE_LABEL,
-  REGISTER_MEMO_TO_LABEL
+  REGISTER_MEMO_TO_LABEL,
+  DEREGISTER_MEMO_TO_LABEL
 } from "actions/types";
 
 export const labelInitialState = {
@@ -40,7 +41,7 @@ export default handleActions(
       return {
         ...state,
         labels: state.labels.filter((lbl) => {
-          return lbl._id !== payload.data._id;
+          return lbl.id !== payload.data.id;
         }),
         pending: false,
         failure: false
@@ -50,7 +51,7 @@ export default handleActions(
       return {
         ...state,
         labels: state.labels.map((lbl) => {
-          if (lbl._id === payload.data._id) {
+          if (lbl.id === payload.data.id) {
             return { ...payload.data };
           }
           return lbl;
@@ -66,7 +67,20 @@ export default handleActions(
       return {
         ...state,
         labels: state.labels.map((lbl) => {
-          if (lbl._id === payload.data._id) {
+          if (lbl.id === payload.data.id) {
+            return { ...payload.data };
+          }
+          return lbl;
+        }),
+        pending: false,
+        failure: false
+      };
+    },
+    [DEREGISTER_MEMO_TO_LABEL]: (state, { payload }) => {
+      return {
+        ...state,
+        labels: state.labels.map((lbl) => {
+          if (lbl.id === payload.data.id) {
             return { ...payload.data };
           }
           return lbl;

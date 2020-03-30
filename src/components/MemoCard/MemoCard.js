@@ -23,7 +23,7 @@ function renderSummary(summary) {
 }
 
 function MemoCard(props) {
-  let url = `/memo/${props.memo._id}`;
+  let url = `/memo/${props.memo.id}`;
   if (props.labelId) {
     url = `/label/${props.labelId}` + url;
   }

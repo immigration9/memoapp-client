@@ -37,14 +37,14 @@ export const createMemo = (title, content, labelId) => async (dispatch) => {
   dispatch(pendingMemo());
 
   try {
-    const data = await createMemoApi(title, content);
+    const { data } = await createMemoApi(title, content);
     dispatch(createMemoSuccess(data));
 
     /**
      * All이 아니라면, 해당 Label에도 Memo 등록을 진행해야 한다.
      */
     if (labelId !== "all") {
-      dispatch(registerMemoToLabel(labelId, data.data._id));
+      dispatch(registerMemoToLabel(labelId, data.data.id));
     }
   } catch (err) {
     dispatch(failureMemo(err));
@@ -55,7 +55,7 @@ export const fetchAllMemos = () => async (dispatch) => {
   dispatch(pendingMemo());
 
   try {
-    const data = await fetchAllMemosApi();
+    const { data } = await fetchAllMemosApi();
     dispatch(fetchAllMemosSuccess(data));
   } catch (err) {
     dispatch(failureMemo(err));
@@ -66,7 +66,7 @@ export const fetchMemosByLabel = (labelId) => async (dispatch) => {
   dispatch(pendingMemo());
 
   try {
-    const data = await fetchMemosByLabelApi(labelId);
+    const { data } = await fetchMemosByLabelApi(labelId);
     dispatch(fetchMemosByLabelSuccess(data));
   } catch (err) {
     dispatch(failureMemo(err));
@@ -77,7 +77,7 @@ export const updateMemo = (memoId, title, content) => async (dispatch) => {
   dispatch(pendingMemo());
 
   try {
-    const data = await updateMemoApi(memoId, title, content);
+    const { data } = await updateMemoApi(memoId, title, content);
     dispatch(updateMemosSuccess(data));
     message.info("메모가 저장되었습니다");
   } catch (err) {
@@ -85,10 +85,10 @@ export const updateMemo = (memoId, title, content) => async (dispatch) => {
   }
 };
 
-export const deleteMemo = (memoId) => async (dispatch) => {
+export const deleteMemo = (memoId, labelId) => async (dispatch) => {
   dispatch(pendingMemo());
   try {
-    const data = await deleteMemoApi(memoId);
+    const { data } = await deleteMemoApi(memoId);
     dispatch(deleteMemoSuccess(data));
   } catch (err) {
     dispatch(failureMemo(err));

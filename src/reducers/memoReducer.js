@@ -29,7 +29,7 @@ export default handleActions(
     [FETCH_MEMOS_BY_LABEL]: (state, { payload }) => {
       return {
         ...state,
-        memos: (payload.data && payload.data.memos) || [],
+        memos: payload.data || [],
         pending: false,
         failure: false
       };
@@ -46,7 +46,7 @@ export default handleActions(
       return {
         ...state,
         memos: state.memos.filter((memo) => {
-          return memo._id !== payload.data._id;
+          return memo.id !== payload.data.id;
         }),
         pending: false,
         failure: false
@@ -56,7 +56,7 @@ export default handleActions(
       return {
         ...state,
         memos: state.memos.map((memo) => {
-          if (memo._id === payload.data._id) {
+          if (memo.id === payload.data.id) {
             return { ...payload.data };
           }
           return memo;

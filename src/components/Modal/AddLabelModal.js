@@ -3,7 +3,6 @@ import { Modal, Input, message } from "antd";
 import { isEmptyString } from "utils/stringUtils";
 
 function verifyModalConfirm(handler, title) {
-  console.log(title);
   if (isEmptyString(title)) {
     message.info("레이블명을 입력해주시기 바랍니다");
     return;

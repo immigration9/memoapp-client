@@ -1,13 +1,27 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const PrimaryBtn = styled.button`
+export const Button = styled.button`
   background-color: white;
-  border: 1px solid blue;
-  height: 2rem;
-  border-radius: 1rem;
 
   text-decoration: none;
   cursor: pointer;
+
+  ${({ size }) =>
+    size === "medium"
+      ? css`
+          height: 2rem;
+          font-size: 0.9rem;
+          border-radius: 1rem;
+        `
+      : css`
+          height: 6rem;
+          font-size: 2rem;
+          border-radius: 3rem;
+        `}
+`;
+
+export const PrimaryBtn = styled(Button)`
+  border: 1px solid blue;
   color: blue;
 
   &:hover {
@@ -17,14 +31,8 @@ export const PrimaryBtn = styled.button`
   }
 `;
 
-export const RemoveBtn = styled.button`
-  background-color: white;
+export const RemoveBtn = styled(Button)`
   border: 1px solid red;
-  height: 2rem;
-  border-radius: 1rem;
-
-  text-decoration: none;
-  cursor: pointer;
   color: red;
 
   &:hover {

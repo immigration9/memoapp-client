@@ -7,8 +7,8 @@ const MEMO = "memos";
 /**
  * Fetch All Data
  */
-export const fetchAllLabelsApi = (isPopulated = false) => {
-  return instance.get(`/${LABEL}?populate=${isPopulated}`);
+export const fetchAllLabelsApi = () => {
+  return instance.get(`/${LABEL}`);
 };
 
 export const fetchAllMemosApi = () => {
@@ -55,7 +55,7 @@ export const updateMemoApi = (memoId, title, content) => {
 };
 
 export const fetchMemosByLabelApi = (labelId) => {
-  return instance.get(`/${LABEL}/${labelId}`);
+  return instance.get(`/${LABEL}/${labelId}/${MEMO}`);
 };
 
 export const deleteMemoApi = (memoId) => {
@@ -66,9 +66,16 @@ export const deleteMemoApi = (memoId) => {
  * Memo to Label Related
  */
 
-export const registerMemoToLabelApi = (labelId, memoId) => {
+export const registerMemoToLabelApi = (labelId, memoIds) => {
   return instance.post(
     `/${LABEL}/${labelId}/memos`,
+    strfy({ memoIds: Array.isArray(memoIds) ? memoIds : [memoIds] })
+  );
+};
+
+export const deregisterMemoFromLabelApi = (labelId, memoId) => {
+  return instance.post(
+    `/${LABEL}/${labelId}/memos/delete`,
     strfy({ memoIds: [memoId] })
   );
 };
