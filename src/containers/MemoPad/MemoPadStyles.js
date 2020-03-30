@@ -16,15 +16,36 @@ export const TitleSection = styled.div`
 `;
 
 export const InfoSection = styled.div`
-  height: 4rem;
+  height: 5rem;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-around;
 `;
 
 export const DatetimePart = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+`;
+
+export const DatetimeInfo = styled.span`
+  margin-right: 1rem;
+`;
+
+export const LabelsPart = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const Label = styled.div`
+  min-width: 2rem;
+  padding: 0.3rem 1rem;
+  margin-right: 0.3rem;
+  background-color: blue;
+  border-radius: 1.5rem;
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
 `;
 
 export const EditorSection = styled.div`

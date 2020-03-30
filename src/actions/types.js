@@ -6,6 +6,7 @@ export const FAILURE_MEMO = "@FAILURE_MEMO";
 
 export const FETCH_ALL_LABELS = "@FETCH_ALL_LABELS";
 export const FETCH_ALL_MEMOS = "@FETCH_ALL_MEMOS";
+export const FETCH_ALL_MEMOS_COUNT = "@FETCH_ALL_MEMOS_COUNT";
 
 export const FETCH_LABEL = "@FETCH_LABEL";
 export const CREATE_LABEL = "@CREATE_LABEL";

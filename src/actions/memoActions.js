@@ -13,7 +13,8 @@ import {
   DELETE_MEMO,
   PENDING_MEMO,
   FAILURE_MEMO,
-  FETCH_ALL_MEMOS
+  FETCH_ALL_MEMOS,
+  FETCH_ALL_MEMOS_COUNT
 } from "actions/types";
 import { registerMemoToLabel } from "./labelActions";
 import { message } from "antd";
@@ -26,6 +27,11 @@ export const fetchAllMemosSuccess = createAction(
   FETCH_ALL_MEMOS,
   (data) => data
 );
+export const fetchAllMemosCountSuccess = createAction(
+  FETCH_ALL_MEMOS_COUNT,
+  (data) => data
+);
+
 export const fetchMemosByLabelSuccess = createAction(
   FETCH_MEMOS_BY_LABEL,
   (data) => data
@@ -55,8 +61,19 @@ export const fetchAllMemos = () => async (dispatch) => {
   dispatch(pendingMemo());
 
   try {
-    const { data } = await fetchAllMemosApi();
+    const { data } = await fetchAllMemosApi(false);
     dispatch(fetchAllMemosSuccess(data));
+  } catch (err) {
+    dispatch(failureMemo(err));
+  }
+};
+
+export const fetchAllMemoCount = () => async (dispatch) => {
+  dispatch(pendingMemo());
+
+  try {
+    const { data } = await fetchAllMemosApi(true);
+    dispatch(fetchAllMemosCountSuccess(data));
   } catch (err) {
     dispatch(failureMemo(err));
   }

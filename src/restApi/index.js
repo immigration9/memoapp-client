@@ -11,8 +11,8 @@ export const fetchAllLabelsApi = () => {
   return instance.get(`/${LABEL}`);
 };
 
-export const fetchAllMemosApi = () => {
-  return instance.get(`/${MEMO}`);
+export const fetchAllMemosApi = (countOnly = false) => {
+  return instance.get(`/${MEMO}${countOnly ? "?countOnly=" + countOnly : ""}`);
 };
 
 /**
@@ -32,6 +32,10 @@ export const updateLabelApi = (labelId, title) => {
 
 export const deleteLabelApi = (labelId) => {
   return instance.delete(`/${LABEL}/${labelId}`);
+};
+
+export const fetchLabelsByMemoApi = (memoId) => {
+  return instance.get(`/${MEMO}/${memoId}/${LABEL}`);
 };
 
 /**

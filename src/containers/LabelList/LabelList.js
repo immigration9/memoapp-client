@@ -6,14 +6,16 @@ import {
   ListsSection
 } from "./LabelListStyles";
 import PrimaryButton from "components/Buttons/PrimaryButton";
-import { fetchAllLabels, createLabel } from "actions/labelActions";
 import AddLabelModal from "components/Modal/AddLabelModal";
+import { fetchAllLabels, createLabel } from "actions/labelActions";
+import { fetchAllMemoCount } from "actions/memoActions";
 
 function LabelList() {
-  const labels = useSelector((state) => state.labels.labels);
+  const labels = useSelector(({ labels }) => labels.labels);
+  const memos = useSelector(({ memos }) => memos.memos);
+  const memosCount = useSelector(({ memos }) => memos.memosCount);
   const dispatch = useDispatch();
 
-  const [totalMemoCount, setTotalMemoCount] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -21,13 +23,13 @@ function LabelList() {
   }, [dispatch]);
 
   useEffect(() => {
-    setTotalMemoCount(labels.reduce((acc, curr) => acc + curr.memoCount, 0));
-  }, [labels]);
+    dispatch(fetchAllMemoCount(true));
+  }, [memos, labels, dispatch]);
 
   return (
     <LabelListWrapper>
       <ListsSection>
-        <LabelWrapper to={`/label/all`}>전체 ({totalMemoCount})</LabelWrapper>
+        <LabelWrapper to={`/label/all`}>전체 ({memosCount})</LabelWrapper>
         {labels.map((lbl) => {
           return (
             <LabelWrapper key={lbl.id} to={`/label/${lbl.id}`}>

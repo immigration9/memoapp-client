@@ -1,24 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  MemoPadWrapper,
-  TitleSection,
-  InfoSection,
-  DatetimePart,
-  EditorSection,
-  ButtonPart
-} from "./MemoPadStyles";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import RemoveButton from "components/Buttons/RemoveButton";
 import { Input } from "antd";
 import moment from "moment";
+
+import { fetchLabelsByMemoApi } from "restApi";
+import RemoveButton from "components/Buttons/RemoveButton";
 import PrimaryButton from "components/Buttons/PrimaryButton";
+import AddOtherLabelModal from "components/Modal/AddOtherLabelModal";
 import { deleteMemo, updateMemo } from "actions/memoActions";
+import {
+  deregisterMemoFromLabel,
+  registerMemoToLabel
+} from "actions/labelActions";
+import {
+  MemoPadWrapper,
+  TitleSection,
+  InfoSection,
+  DatetimePart,
+  LabelsPart,
+  Label,
+  EditorSection,
+  ButtonPart,
+  DatetimeInfo
+} from "./MemoPadStyles";
 
 const DATETIME_FORMAT = "YYYY-MM-DD HH:mm";
 
@@ -43,9 +53,29 @@ function MemoPad() {
   const [memoTitle, changeMemoTitle] = useState("");
   const [editorState, changeState] = useState(EditorState.createEmpty());
 
-  const memoInfo = useSelector((state) =>
-    state.memos.memos.find((memo) => memo.id === memoId)
+  const [labelList, setLabelList] = useState([]);
+  const [addLabelModalVisible, setAddLabelModalVisible] = useState(false);
+
+  const labels = useSelector(({ labels }) => labels.labels);
+  const memoInfo = useSelector(({ memos }) =>
+    memos.memos.find((memo) => memo.id === memoId)
   );
+
+  useEffect(() => {
+    /**
+     * Memopad 내부에서 업데이트시 반영되지 않는 문제가 있음
+     */
+    async function getLabelsByMemo() {
+      if (memoId) {
+        const {
+          data: { data }
+        } = await fetchLabelsByMemoApi(memoId);
+        setLabelList(data);
+      }
+    }
+
+    getLabelsByMemo();
+  }, [memoId, labels]);
 
   useEffect(() => {
     if (memoId !== selectedMemo && memoInfo) {
@@ -54,6 +84,11 @@ function MemoPad() {
       changeState(stateFromHtml(memoInfo.content));
     }
   }, [memoId, memoInfo, selectedMemo]);
+
+  const removeMemoFromLabel = (selectedLabelId) => {
+    dispatch(deregisterMemoFromLabel(selectedLabelId, memoId));
+    history.push(`/label/${labelId}`);
+  };
 
   if (!memoId) {
     return (
@@ -92,25 +127,28 @@ function MemoPad() {
         </ButtonPart>
       </TitleSection>
       <InfoSection>
-        {/* <Select
-          placeholder="태그를 등록해주세요"
-          mode="multiple"
-          style={{ width: "60%" }}
-        ></Select> */}
         <DatetimePart>
-          <span>
+          <DatetimeInfo>
             {memoInfo &&
               `최초 작성일: ${moment(memoInfo.createdAt).format(
                 DATETIME_FORMAT
               )}`}
-          </span>
-          <span>
+          </DatetimeInfo>
+          <DatetimeInfo>
             {memoInfo &&
               `최종 수정일: ${moment(memoInfo.updatedAt).format(
                 DATETIME_FORMAT
               )}`}
-          </span>
+          </DatetimeInfo>
         </DatetimePart>
+        <LabelsPart>
+          {labelList.map((label) => (
+            <Label key={label.id} onClick={() => removeMemoFromLabel(label.id)}>
+              {label.title}
+            </Label>
+          ))}
+          <Label onClick={() => setAddLabelModalVisible(true)}>+</Label>
+        </LabelsPart>
       </InfoSection>
       <EditorSection>
         <Editor
@@ -121,6 +159,20 @@ function MemoPad() {
           onEditorStateChange={changeState}
         />
       </EditorSection>
+      {addLabelModalVisible && (
+        <AddOtherLabelModal
+          title="레이블 추가"
+          modalVisible={addLabelModalVisible}
+          labelList={labels.filter(
+            (label) => !labelList.find((lbl) => lbl.id === label.id)
+          )}
+          setModalVisible={setAddLabelModalVisible}
+          handleOk={(selectedLabel) => {
+            dispatch(registerMemoToLabel(selectedLabel, memoId));
+            setAddLabelModalVisible(false);
+          }}
+        />
+      )}
     </MemoPadWrapper>
   );
 }

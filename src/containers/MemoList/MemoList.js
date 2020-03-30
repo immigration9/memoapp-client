@@ -17,7 +17,8 @@ import {
 } from "actions/memoActions";
 import {
   deregisterMemoFromLabel,
-  registerMemoToLabel
+  registerMemoToLabel,
+  fetchAllLabels
 } from "actions/labelActions";
 import RemoveButton from "components/Buttons/RemoveButton";
 import { deleteLabel, updateLabel } from "actions/labelActions";
@@ -63,23 +64,27 @@ function MemoList() {
     [setSelectedMemos, selectedMemos]
   );
 
-  const removeSelectedMemos = () => {
+  const removeSelectedMemos = async () => {
     const confirmDelete = window.confirm("선택된 메모들을 삭제하시겠습니까?");
     if (confirmDelete) {
-      selectedMemos.forEach((memoId) => {
-        dispatch(deleteMemo(memoId, labelId));
-      });
+      await Promise.all(
+        selectedMemos.map((memoId) => dispatch(deleteMemo(memoId, labelId)))
+      );
+      await dispatch(fetchAllLabels());
     }
     setSelectedMemos([]);
   };
-  const removeSelectedMemosFromLabel = () => {
+  const removeSelectedMemosFromLabel = async () => {
     const confirmDelete = window.confirm(
       "선택된 메모들을 레이블에서 제거하시겠습니까?"
     );
     if (confirmDelete) {
-      selectedMemos.forEach((memoId) => {
-        dispatch(deregisterMemoFromLabel(labelId, memoId));
-      });
+      await Promise.all(
+        selectedMemos.map((memoId) =>
+          dispatch(deregisterMemoFromLabel(memoId, labelId))
+        )
+      );
+      await dispatch(fetchAllLabels());
     }
     setSelectedMemos([]);
   };

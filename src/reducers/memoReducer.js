@@ -6,12 +6,14 @@ import {
   UPDATE_MEMO,
   FETCH_ALL_MEMOS,
   FETCH_MEMOS_BY_LABEL,
+  FETCH_ALL_MEMOS_COUNT,
   PENDING_MEMO,
   FAILURE_MEMO
 } from "actions/types";
 
 export const memoInitialState = {
   memos: [],
+  memosCount: 0,
   pending: false,
   failure: false
 };
@@ -22,6 +24,14 @@ export default handleActions(
       return {
         ...state,
         memos: payload.data,
+        pending: false,
+        failure: false
+      };
+    },
+    [FETCH_ALL_MEMOS_COUNT]: (state, { payload }) => {
+      return {
+        ...state,
+        memosCount: payload.data,
         pending: false,
         failure: false
       };
