@@ -56,7 +56,7 @@ export default handleActions(
       return {
         ...state,
         memos: state.memos.filter((memo) => {
-          return memo.id !== payload.data.id;
+          return memo.id !== payload.memoId;
         }),
         pending: false,
         failure: false

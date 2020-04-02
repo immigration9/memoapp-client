@@ -37,7 +37,7 @@ export const fetchMemosByLabelSuccess = createAction(
   (data) => data
 );
 export const updateMemosSuccess = createAction(UPDATE_MEMO, (data) => data);
-export const deleteMemoSuccess = createAction(DELETE_MEMO, (data) => data);
+export const deleteMemoSuccess = createAction(DELETE_MEMO, (memoId) => memoId);
 
 export const createMemo = (title, content, labelId) => async (dispatch) => {
   dispatch(pendingMemo());
@@ -105,8 +105,8 @@ export const updateMemo = (memoId, title, content) => async (dispatch) => {
 export const deleteMemo = (memoId, labelId) => async (dispatch) => {
   dispatch(pendingMemo());
   try {
-    const { data } = await deleteMemoApi(memoId);
-    dispatch(deleteMemoSuccess(data));
+    await deleteMemoApi(memoId);
+    dispatch(deleteMemoSuccess(memoId));
   } catch (err) {
     dispatch(failureMemo(err));
   }
